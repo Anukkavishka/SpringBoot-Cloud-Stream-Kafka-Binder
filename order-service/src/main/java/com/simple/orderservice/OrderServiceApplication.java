@@ -64,10 +64,8 @@ public class OrderServiceApplication {
 		
 	    @StreamListener(target = OrderSource.INPUT)
 	    public void inputPayload(OrderEvent orderEvent) {
-	    	System.out.println("Processed OrderEvent Recieved");
-	    	log.info(orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\nOrder Status \t"+orderEvent.getStatus().toString());
-	    	System.out.println(orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\nOrder Status \t"+orderEvent.getStatus().toString());	
-	    	System.out.println("Processed OrderEvent Recieved and Logged Successfully");
+	    	
+	    	log.info("\n"+orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\nOrder Status \t"+orderEvent.getStatus().toString());
 	    }
 
 	}
@@ -76,8 +74,7 @@ public class OrderServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OrderServiceApplication.class, args);
 		
-		System.out.println("OrderServiceApplication Running.......................");
-	
+		
 	}
 
 	

@@ -45,15 +45,7 @@ public class StockServiceApplication {
 		
 	}
 	
-	@PostMapping("/msgprocessed/")
-	public void publish() {
-		
-		//String greet="Hello "+name;
-		
-		//Message<OrderEvent> orderin=MessageBuilder.withPayload(processPayload(orderEvent)).build();
-		//this.source.send(orderin);
-		
-	}
+	
 
 	
 	@Component
@@ -64,34 +56,25 @@ public class StockServiceApplication {
 		
 
 	    @StreamListener(target = StockSource.INPUT)
-	    @SendTo(StockSource.OUTPUT)
-	    public OrderEvent inputPayload(OrderEvent orderEvent) {
-	    	log.info(orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\nOrder Status \t"+orderEvent.getStatus().toString());
-	    	System.out.println(orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\nOrder Status \t"+orderEvent.getStatus().toString());	
-			
+	    public void inputPayload(OrderEvent orderEvent) {
+	    	log.info("\n"+orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\nOrder Status \t"+orderEvent.getStatus().toString());
+	    	
 	    	orderEvent.setStatus(OrderEventType.APRROVED);	
 	    	Message<OrderEvent> orderin=MessageBuilder.withPayload(orderEvent).build();
 			outgngsource.send(orderin);
-			System.out.println("Processed OrderEvent Sent");
-			return orderEvent;
-	    	
-	    	//processPayload(orderEvent);
+			
+			
 	    }
 	    
 	   
 
 	}
 	 
-	public static OrderEvent processPayload(OrderEvent orderEvent) {
-	    	orderEvent.setStatus(OrderEventType.APRROVED);	
-	    	return orderEvent;
-			
-	    	
-	    }
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(StockServiceApplication.class, args);
-		System.out.println("StockServiceApplication Running.......................");
+		
 	}
 	
 	
