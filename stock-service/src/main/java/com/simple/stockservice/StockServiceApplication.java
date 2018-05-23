@@ -4,8 +4,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +21,8 @@ import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
+
+import com.simple.stockservice.model.OrderEvent;
 
 @EnableBinding(StockSource.class)
 @EnableAutoConfiguration
@@ -59,9 +59,9 @@ public class StockServiceApplication {
 		
 
 	    @StreamListener(target = StockSource.INPUT)
-	    public void bark(String msg) {
-	    	log.info("linside static class"+msg.toString());
-	    	System.out.println("inside static class"+msg.toString());
+	    public void bark(OrderEvent orderEvent) {
+	    	log.info(orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\n Order Status"+orderEvent.getStatus().toString());
+	    	System.out.println(orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\n Order Status"+orderEvent.getStatus().toString());
 			
 			
 	    }

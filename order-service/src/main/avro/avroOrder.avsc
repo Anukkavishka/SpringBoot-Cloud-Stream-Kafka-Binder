@@ -1,0 +1,23 @@
+{ 
+	"namespace":"com.simple.orderservice",
+	"type":"record",
+	"name":"order",
+	"fields":[
+		{
+			"name":"orderId",
+			"type":"String"
+
+		},{
+
+			"name":"productId",
+			"type":"String"
+		},{
+
+			"name":"Quantity",
+			"type":"Integer"
+		}
+
+	]
+
+
+}

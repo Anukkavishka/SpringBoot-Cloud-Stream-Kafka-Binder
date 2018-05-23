@@ -55,6 +55,24 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.avro/avro-maven-plugin -->
+		<dependency>
+	      <groupId>org.apache.kafka</groupId>
+	      <artifactId>kafka-clients</artifactId>
+	      <version>1.0.0</version>
+	    </dependency>
+		<dependency>
+		  <groupId>org.apache.avro</groupId>
+		  <artifactId>avro</artifactId>
+		  <version>1.8.1</version>
+		</dependency>
+		
+		<dependency>
+	      <groupId>io.confluent</groupId>
+	      <artifactId>kafka-streams-avro-serde</artifactId>
+	      <version>4.0.0</version>
+	    </dependency>
+	
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -86,12 +104,62 @@
 	</dependencyManagement>
 
 	<build>
+	<!-- newly added -->
+		<testResources>
+	      <testResource>
+	        <directory>src/main/avro</directory>
+	      </testResource>
+	    </testResources>
+	<!-- newly added -->		
+		<pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>build-helper-maven-plugin</artifactId>
+		        <version>1.10</version>
+		     </plugin>
+			<!-- avro maven source generating plugin starting -->
+	
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>1.8.1</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schema</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>src/main/avro/</sourceDirectory>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<stringType>String</stringType>
+							<includes>
+					          <include>**/*.avro</include>
+					        </includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+		<!-- avro maven source generating plugin ending -->
+		
+	
+	</plugins>
+</pluginManagement>
+		
 	</build>
 
 	<repositories>
@@ -110,6 +178,10 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
 		</repository>
 	</repositories>
 

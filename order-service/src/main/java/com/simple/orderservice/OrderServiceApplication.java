@@ -19,7 +19,10 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.support.SendToMethodReturnValueHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.simple.orderservice.model.OrderEvent;
 
 @RestController
 @EnableBinding(OrderSource.class)
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class OrderServiceApplication {
 
+	
 	
 	//private OrderSource source;
 	private MessageChannel source;
@@ -36,13 +40,13 @@ public class OrderServiceApplication {
 		this.source=channels.ordersOut();
 	}
 
-	@PostMapping("/msg/{name}")
-	public void publish(@PathVariable String name) {
+	@PostMapping("/msg/")
+	public void publish(@RequestBody OrderEvent orderEvent) {
 		
-		String greet="Hello "+name;
+		//String greet="Hello "+name;
 		
-		Message<String> greeting=MessageBuilder.withPayload(greet).build();
-		this.source.send(greeting);
+		Message<OrderEvent> orderin=MessageBuilder.withPayload(orderEvent).build();
+		this.source.send(orderin);
 		
 	}
 	
