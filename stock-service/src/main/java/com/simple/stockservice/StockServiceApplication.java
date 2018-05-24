@@ -58,8 +58,15 @@ public class StockServiceApplication {
 	    @StreamListener(target = StockSource.INPUT)
 	    public void inputPayload(OrderEvent orderEvent) {
 	    	log.info("\n"+orderEvent.getOrder().getOrderId()+"\n"+orderEvent.getOrder().getProName()+"\n"+orderEvent.getOrder().getQty()+"\nOrder Status \t"+orderEvent.getStatus().toString());
-	    	
-	    	orderEvent.setStatus(OrderEventType.APRROVED);	
+	    	//this is simple hardcoded logic for the stream processing and you 
+	    	//can go depth with this as you please
+	    	if(orderEvent.getOrder().getQty()<10) {
+	    		orderEvent.setStatus(OrderEventType.APRROVED);	
+		    		
+	    	}else {
+	    		orderEvent.setStatus(OrderEventType.REJECTED);	
+		    	
+	    	}
 	    	Message<OrderEvent> orderin=MessageBuilder.withPayload(orderEvent).build();
 			outgngsource.send(orderin);
 			
