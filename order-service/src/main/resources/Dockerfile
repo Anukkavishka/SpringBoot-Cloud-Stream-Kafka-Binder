@@ -5,5 +5,5 @@ ADD order-service-0.0.1-SNAPSHOT.jar app.jar
 RUN bash -c 'touch /app.jar'
 EXPOSE 9091 6565
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-
+#move this file into the target directory and then build the image using docker
 
